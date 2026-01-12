@@ -17,7 +17,7 @@ const PostJob = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        'http://localhost:5000/api/jobs',
+        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/jobs`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
