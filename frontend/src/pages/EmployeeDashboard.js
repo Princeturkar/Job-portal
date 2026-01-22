@@ -141,24 +141,54 @@ const EmployeeDashboard = ({ user }) => {
             filteredJobs.map(job => (
               <div key={job._id} className="job-card">
                 <h3>{job.title}</h3>
-                <p><strong>Company:</strong> {job.company}</p>
-                <p><strong>Location:</strong> {job.location}</p>
-                <p><strong>Salary:</strong> {job.salary || 'Not specified'}</p>
-                <p><strong>Description:</strong> {job.description}</p>
-                <p><strong>Posted by:</strong> {job.admin?.name || 'Admin'}</p>
-                <p><strong>Applications:</strong> {job.applications.length}</p>
+                
+                <div className="job-info-grid">
+                  <div className="info-item">
+                    <span className="info-label">📍 Location</span>
+                    <span className="info-value">{job.location}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">🏢 Company</span>
+                    <span className="info-value">{job.company}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">📁 Job Type</span>
+                    <span className="info-value">{job.jobType || 'Full Time'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">🌐 Work Mode</span>
+                    <span className="info-value">{job.workMode || 'Remote'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">⏳ Experience</span>
+                    <span className="info-value">{job.experience || '0 to 2 years'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">💰 Compensation</span>
+                    <span className="info-value">{job.salary || 'Competitive'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">👥 Applications</span>
+                    <span className="info-value">{job.applications.length}</span>
+                  </div>
+                </div>
+
+                <div className="job-description-section">
+                  <h4>Job Description</h4>
+                  <p>{job.description}</p>
+                </div>
                 
                 <div className="job-actions">
                   <button
                     onClick={() => handleApply(job._id)}
-                    className="btn btn-success"
+                    className="apply-btn-large"
                     disabled={job.applications.includes(user.id)}
                   >
-                    {job.applications.includes(user.id) ? '✅ Applied' : '📝 Apply Now'}
+                    {job.applications.includes(user.id) ? '✅ Applied' : 'Apply Now'}
                   </button>
                   <button
                     onClick={() => handleSaveJob(job._id)}
-                    className="btn"
+                    className="btn btn-secondary"
                     style={{marginLeft: '10px'}}
                   >
                     💾 Save Job

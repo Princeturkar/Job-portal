@@ -10,7 +10,10 @@ const Dashboard = ({ user }) => {
     company: '',
     location: '',
     description: '',
-    salary: ''
+    salary: '',
+    jobType: 'Full Time',
+    workMode: 'Remote',
+    experience: '0 to 2 years'
   });
 
   useEffect(() => {
@@ -38,7 +41,16 @@ const Dashboard = ({ user }) => {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('Job added:', response.data);
-      setFormData({ title: '', company: '', location: '', description: '', salary: '' });
+      setFormData({ 
+        title: '', 
+        company: '', 
+        location: '', 
+        description: '', 
+        salary: '',
+        jobType: 'Full Time',
+        workMode: 'Remote',
+        experience: '0 to 2 years'
+      });
       setShowAddForm(false);
       fetchJobs();
       alert('Job added successfully!');
@@ -56,7 +68,10 @@ const Dashboard = ({ user }) => {
       company: job.company || '',
       location: job.location || '',
       description: job.description || '',
-      salary: job.salary || ''
+      salary: job.salary || '',
+      jobType: job.jobType || 'Full Time',
+      workMode: job.workMode || 'Remote',
+      experience: job.experience || '0 to 2 years'
     });
   };
 
@@ -70,7 +85,16 @@ const Dashboard = ({ user }) => {
       });
       console.log('Job updated:', response.data);
       setEditingJob(null);
-      setFormData({ title: '', company: '', location: '', description: '', salary: '' });
+      setFormData({ 
+        title: '', 
+        company: '', 
+        location: '', 
+        description: '', 
+        salary: '',
+        jobType: 'Full Time',
+        workMode: 'Remote',
+        experience: '0 to 2 years'
+      });
       fetchJobs();
       alert('Job updated successfully!');
     } catch (error) {
@@ -117,7 +141,16 @@ const Dashboard = ({ user }) => {
   const cancelEdit = () => {
     setEditingJob(null);
     setShowAddForm(false);
-    setFormData({ title: '', company: '', location: '', description: '', salary: '' });
+    setFormData({ 
+      title: '', 
+      company: '', 
+      location: '', 
+      description: '', 
+      salary: '',
+      jobType: 'Full Time',
+      workMode: 'Remote',
+      experience: '0 to 2 years'
+    });
   };
 
   const isMyJob = (job) => {
@@ -203,26 +236,55 @@ const Dashboard = ({ user }) => {
                 <option value="Chicago, IL">Chicago, IL</option>
                 <option value="Boston, MA">Boston, MA</option>
                 <option value="Remote">Remote</option>
+                <option value="Worldwide">Worldwide</option>
                 <option value="Hybrid">Hybrid</option>
               </select>
             </div>
             <div className="form-group">
-              <label>💰 Salary</label>
+              <label>📁 Job Type</label>
               <select
+                value={formData.jobType}
+                onChange={(e) => setFormData({...formData, jobType: e.target.value})}
+                required
+              >
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>🌐 Work Mode</label>
+              <select
+                value={formData.workMode}
+                onChange={(e) => setFormData({...formData, workMode: e.target.value})}
+                required
+              >
+                <option value="Remote">Remote</option>
+                <option value="On-site">On-site</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>⏳ Experience</label>
+              <select
+                value={formData.experience}
+                onChange={(e) => setFormData({...formData, experience: e.target.value})}
+                required
+              >
+                <option value="0 to 2 years">0 to 2 years</option>
+                <option value="2 to 5 years">2 to 5 years</option>
+                <option value="5+ years">5+ years</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>💰 Salary / Compensation</label>
+              <input
+                type="text"
                 value={formData.salary}
                 onChange={(e) => setFormData({...formData, salary: e.target.value})}
-              >
-                <option value="">Select Salary Range</option>
-                <option value="$40,000 - $60,000">$40,000 - $60,000</option>
-                <option value="$60,000 - $80,000">$60,000 - $80,000</option>
-                <option value="$80,000 - $100,000">$80,000 - $100,000</option>
-                <option value="$100,000 - $120,000">$100,000 - $120,000</option>
-                <option value="$120,000 - $150,000">$120,000 - $150,000</option>
-                <option value="$150,000 - $200,000">$150,000 - $200,000</option>
-                <option value="$200,000+">$200,000+</option>
-                <option value="Competitive">Competitive</option>
-                <option value="Negotiable">Negotiable</option>
-              </select>
+                placeholder="e.g. INR 18 LPA CTC"
+              />
             </div>
             <div className="form-group">
               <label>📄 Description</label>
@@ -259,6 +321,7 @@ const Dashboard = ({ user }) => {
             {editingJob === job._id ? (
               <form onSubmit={handleUpdate}>
                 <div className="form-group">
+                  <label>📝 Title</label>
                   <input
                     type="text"
                     value={formData.title}
@@ -268,6 +331,7 @@ const Dashboard = ({ user }) => {
                   />
                 </div>
                 <div className="form-group">
+                  <label>🏢 Company</label>
                   <input
                     type="text"
                     value={formData.company}
@@ -277,6 +341,7 @@ const Dashboard = ({ user }) => {
                   />
                 </div>
                 <div className="form-group">
+                  <label>📍 Location</label>
                   <input
                     type="text"
                     value={formData.location}
@@ -286,6 +351,44 @@ const Dashboard = ({ user }) => {
                   />
                 </div>
                 <div className="form-group">
+                  <label>📁 Job Type</label>
+                  <select
+                    value={formData.jobType}
+                    onChange={(e) => setFormData({...formData, jobType: e.target.value})}
+                    required
+                  >
+                    <option value="Full Time">Full Time</option>
+                    <option value="Part Time">Part Time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>🌐 Work Mode</label>
+                  <select
+                    value={formData.workMode}
+                    onChange={(e) => setFormData({...formData, workMode: e.target.value})}
+                    required
+                  >
+                    <option value="Remote">Remote</option>
+                    <option value="On-site">On-site</option>
+                    <option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>⏳ Experience</label>
+                  <select
+                    value={formData.experience}
+                    onChange={(e) => setFormData({...formData, experience: e.target.value})}
+                    required
+                  >
+                    <option value="0 to 2 years">0 to 2 years</option>
+                    <option value="2 to 5 years">2 to 5 years</option>
+                    <option value="5+ years">5+ years</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>💰 Salary</label>
                   <input
                     type="text"
                     value={formData.salary}
@@ -294,6 +397,7 @@ const Dashboard = ({ user }) => {
                   />
                 </div>
                 <div className="form-group">
+                  <label>📄 Description</label>
                   <textarea
                     rows="3"
                     value={formData.description}
@@ -308,11 +412,34 @@ const Dashboard = ({ user }) => {
             ) : (
               <>
                 <h3>{job.title}</h3>
-                <p><strong>Company:</strong> {job.company}</p>
-                <p><strong>Location:</strong> {job.location}</p>
-                <p><strong>Salary:</strong> {job.salary || 'Not specified'}</p>
-                <p><strong>Description:</strong> {job.description}</p>
-                <p><strong>Applications:</strong> {job.applications.length}</p>
+                
+                <div className="job-info-grid">
+                  <div className="info-item">
+                    <span className="info-label">📍 Location</span>
+                    <span className="info-value">{job.location}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">📁 Job Type</span>
+                    <span className="info-value">{job.jobType || 'Full Time'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">🌐 Work Mode</span>
+                    <span className="info-value">{job.workMode || 'Remote'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">⏳ Experience</span>
+                    <span className="info-value">{job.experience || '0 to 2 years'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">💰 Compensation</span>
+                    <span className="info-value">{job.salary || 'Competitive'}</span>
+                  </div>
+                </div>
+
+                <div className="job-description-section">
+                  <h4>Job Description</h4>
+                  <p>{job.description}</p>
+                </div>
                 
                 <div className="job-actions">
                   {user?.role === 'admin' && (
@@ -329,10 +456,10 @@ const Dashboard = ({ user }) => {
                   {user?.role === 'jobseeker' && (
                     <button
                       onClick={() => handleApply(job._id)}
-                      className="btn btn-success"
+                      className="apply-btn-large"
                       disabled={job.applications.includes(user.id)}
                     >
-                      {job.applications.includes(user.id) ? '✅ Applied' : '📝 Apply'}
+                      {job.applications.includes(user.id) ? '✅ Applied' : 'Apply Now'}
                     </button>
                   )}
                 </div>

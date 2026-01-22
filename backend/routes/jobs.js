@@ -42,6 +42,9 @@ router.post('/', auth, async (req, res) => {
       location: req.body.location,
       description: req.body.description,
       salary: req.body.salary,
+      jobType: req.body.jobType,
+      workMode: req.body.workMode,
+      experience: req.body.experience,
       employer: req.user.userId,
       admin: req.user.userId
     });
@@ -67,7 +70,10 @@ router.put('/:id', auth, async (req, res) => {
       company: req.body.company,
       location: req.body.location,
       description: req.body.description,
-      salary: req.body.salary
+      salary: req.body.salary,
+      jobType: req.body.jobType,
+      workMode: req.body.workMode,
+      experience: req.body.experience
     }, { new: true });
     res.json(updatedJob);
   } catch (error) {
