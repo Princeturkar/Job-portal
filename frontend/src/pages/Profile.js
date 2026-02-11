@@ -26,8 +26,10 @@ const Profile = ({ user }) => {
       });
       if (res.data.profile) {
         setProfileData({
-          ...res.data.profile,
-          skills: res.data.profile.skills.join(', ')
+          skills: res.data.profile.skills?.join(', ') || '',
+          education: res.data.profile.education || [{ institution: '', degree: '', year: '' }],
+          experience: res.data.profile.experience || [{ company: '', position: '', duration: '' }],
+          socialLinks: res.data.profile.socialLinks || { linkedin: '', github: '', portfolio: '' }
         });
         setResumeUrl(res.data.profile.resumeUrl);
       }
@@ -113,15 +115,15 @@ const Profile = ({ user }) => {
               type="text" 
               className="form-control mb-2" 
               placeholder="LinkedIn"
-              value={profileData.socialLinks.linkedin}
-              onChange={(e) => setProfileData({...profileData, socialLinks: {...profileData.socialLinks, linkedin: e.target.value}})}
+              value={profileData.socialLinks?.linkedin || ''}
+              onChange={(e) => setProfileData({...profileData, socialLinks: {...(profileData.socialLinks || {}), linkedin: e.target.value}})}
             />
             <input 
               type="text" 
               className="form-control mb-2" 
               placeholder="GitHub"
-              value={profileData.socialLinks.github}
-              onChange={(e) => setProfileData({...profileData, socialLinks: {...profileData.socialLinks, github: e.target.value}})}
+              value={profileData.socialLinks?.github || ''}
+              onChange={(e) => setProfileData({...profileData, socialLinks: {...(profileData.socialLinks || {}), github: e.target.value}})}
             />
           </div>
 
