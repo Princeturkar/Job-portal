@@ -249,6 +249,14 @@ const EmployeeDashboard = ({ user }) => {
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+export default EmployeeDashboard;">📄 Manage Resume & Profile Details</button>
+          </div>
+        </div>
+      )}
       )}
     </div>
   );
