@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const EmployeeDashboard = ({ user }) => {
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [activeTab, setActiveTab] = useState('browse-jobs');
   const [myApplications, setMyApplications] = useState([]);
@@ -243,9 +245,10 @@ const EmployeeDashboard = ({ user }) => {
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Role:</strong> {user.role}</p>
           <div style={{marginTop: '20px'}}>
-            <a href="/profile" className="btn" style={{textDecoration: 'none'}}>📄 Manage Resume & Profile Details</a>
+            <button onClick={() => navigate('/profile')} className="btn">📄 Manage Resume & Profile Details</button>
           </div>
         </div>
+      )}
       )}
     </div>
   );
