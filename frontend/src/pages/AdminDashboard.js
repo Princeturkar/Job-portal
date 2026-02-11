@@ -401,6 +401,9 @@ const AdminDashboard = ({ user }) => {
                 <p><strong>Company:</strong> {app.company}</p>
                 <p><strong>Applicant:</strong> {app.applicantName}</p>
                 <p><strong>Email:</strong> {app.applicantEmail}</p>
+                {app.resumeUrl && (
+                  <p><strong>Resume:</strong> <a href={app.resumeUrl} target="_blank" rel="noopener noreferrer" style={{color: '#4CAF50'}}>📄 View Resume</a></p>
+                )}
                 <p><strong>Applied on:</strong> {new Date(app.appliedDate).toLocaleDateString()}</p>
                 <p><strong>Status:</strong> 
                   <select 

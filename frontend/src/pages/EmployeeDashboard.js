@@ -242,6 +242,9 @@ const EmployeeDashboard = ({ user }) => {
           <p><strong>Name:</strong> {user.name}</p>
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Role:</strong> {user.role}</p>
+          <div style={{marginTop: '20px'}}>
+            <a href="/profile" className="btn" style={{textDecoration: 'none'}}>📄 Manage Resume & Profile Details</a>
+          </div>
         </div>
       )}
     </div>
