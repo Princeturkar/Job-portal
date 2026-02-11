@@ -19,7 +19,7 @@ const ManageJobs = ({ user }) => {
   const fetchMyJobs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/jobs/my-jobs', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/jobs/my-jobs`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setJobs(response.data);
@@ -44,7 +44,7 @@ const ManageJobs = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://localhost:5000/api/jobs/${editingJob}`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/jobs/${editingJob}`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -60,7 +60,7 @@ const ManageJobs = ({ user }) => {
     if (window.confirm('Are you sure you want to delete this job?')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:5000/api/jobs/${jobId}`, {
+        await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/jobs/${jobId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchMyJobs();

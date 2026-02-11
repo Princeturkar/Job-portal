@@ -7,6 +7,7 @@ const applicationSchema = new mongoose.Schema({
   company: { type: String, required: true },
   applicantName: { type: String, required: true },
   applicantEmail: { type: String, required: true },
+  resumeUrl: { type: String },
   status: { type: String, enum: ['pending', 'reviewed', 'accepted', 'rejected'], default: 'pending' },
   appliedDate: { type: Date, default: Date.now }
 }, { timestamps: true });

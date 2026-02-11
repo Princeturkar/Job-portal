@@ -4,15 +4,17 @@ const Application = require('../models/Application');
 const SavedJob = require('../models/SavedJob');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const sendEmail = require('../utils/email');
 const router = express.Router();
 
-// Get all jobs
+// Get all job
 router.get('/', async (req, res) => {
   try {
     const jobs = await Job.find().populate('admin', 'name');
     res.json(jobs);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });      
+    
   }
 });
 
@@ -131,10 +133,19 @@ router.post('/:id/apply', auth, async (req, res) => {
       jobTitle: job.title,
       company: job.company,
       applicantName: user.name,
-      applicantEmail: user.email
+      applicantEmail: user.email,
+      resumeUrl: user.profile?.resumeUrl
     });
     
     await application.save();
+    
+    // Send Confirmation Email to Applicant
+    await sendEmail(
+      user.email,
+      `Application Received: ${job.title}`,
+      `Hi ${user.name}, you have successfully applied for the position of ${job.title} at ${job.company}.`,
+      `<h1>Application Confirmation</h1><p>Hi ${user.name},</p><p>Your application for <b>${job.title}</b> at <b>${job.company}</b> has been received successfully.</p>`
+    );
     
     // Also add to job's applications array for quick reference
     if (!job.applications.includes(req.user.userId)) {
@@ -219,6 +230,14 @@ router.put('/applications/:id', auth, async (req, res) => {
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
     }
+
+    // Send Status Update Email
+    await sendEmail(
+      application.applicantEmail,
+      `Application Status Updated: ${application.jobTitle}`,
+      `Hi ${application.applicantName}, your application status for ${application.jobTitle} at ${application.company} has been updated to: ${req.body.status}.`,
+      `<h1>Status Update</h1><p>Hi ${application.applicantName},</p><p>The status of your application for <b>${application.jobTitle}</b> at <b>${application.company}</b> has been updated to: <b>${req.body.status}</b>.</p>`
+    );
     
     res.json(application);
   } catch (error) {

@@ -11,7 +11,7 @@ const JobList = ({ user }) => {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/jobs');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/jobs`);
       setJobs(response.data);
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -24,7 +24,7 @@ const JobList = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `http://localhost:5000/api/jobs/${jobId}/apply`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/jobs/${jobId}/apply`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

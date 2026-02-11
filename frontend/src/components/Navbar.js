@@ -9,6 +9,7 @@ const Navbar = ({ user, logout }) => {
         {user ? (
           <>
             <Link to="/">Dashboard</Link>
+            {user.role === 'jobseeker' && <Link to="/profile">Profile</Link>}
             {user.role === 'admin' && <Link to="/add-details">Add Details</Link>}
             <span>Welcome, {user.name} ({user.role})</span>
             <button onClick={logout} className="btn">Logout</button>

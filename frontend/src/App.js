@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -8,6 +9,7 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import AddDetails from './pages/AddDetails';
+import Profile from './pages/Profile';
 import './App.css';
 
 function App() {
@@ -43,6 +45,7 @@ function App() {
           <Route path="/admin-login" element={!user ? <AdminLogin setUser={setUser} /> : <Navigate to="/" />} />
           <Route path="/register" element={!user ? <Register setUser={setUser} /> : <Navigate to="/" />} />
           <Route path="/add-details" element={user?.role === 'admin' ? <AddDetails /> : <Navigate to="/" />} />
+          <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/login" />} />
         </Routes>
       </div>
     </Router>

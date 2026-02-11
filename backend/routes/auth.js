@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const sendEmail = require('../utils/email');
 const router = express.Router();
 
 // Register
@@ -17,6 +18,14 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword, role });
     await user.save();
+
+    // Send Welcome Email
+    await sendEmail(
+      email,
+      'Welcome to Job Portal',
+      `Hi ${name}, welcome to our Job Portal!`,
+      `<h1>Welcome ${name}</h1><p>We're glad to have you on board. Start exploring jobs now!</p>`
+    );
 
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET);
     res.status(201).json({ token, user: { id: user._id, name, email, role } });
