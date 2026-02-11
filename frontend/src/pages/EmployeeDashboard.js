@@ -145,6 +145,11 @@ const EmployeeDashboard = ({ user }) => {
             filteredJobs.map(job => (
               <div key={job._id} className="job-card">
                 <h3>{job.title}</h3>
+                {job.admin?.name && (
+                  <p style={{color: '#888', fontSize: '14px', marginBottom: '10px'}}>
+                    <strong>Posted by:</strong> {job.admin.name}
+                  </p>
+                )}
                 
                 <div className="job-info-grid">
                   <div className="info-item">
