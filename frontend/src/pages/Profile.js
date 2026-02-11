@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const Profile = ({ user }) => {
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
     skills: '',
     education: [{ institution: '', degree: '', year: '' }],
@@ -52,6 +54,7 @@ const Profile = ({ user }) => {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Profile updated successfully');
+      navigate('/');
     } catch (error) {
       console.error('Error updating profile:', error);
     }
@@ -72,6 +75,7 @@ const Profile = ({ user }) => {
       });
       setResumeUrl(res.data.resumeUrl);
       alert('Resume uploaded successfully');
+      navigate('/');
     } catch (error) {
       console.error('Error uploading resume:', error);
     }
