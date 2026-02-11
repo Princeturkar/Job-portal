@@ -15,6 +15,7 @@ const Profile = ({ user }) => {
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(true);
   const [resumeUrl, setResumeUrl] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     fetchProfile();
@@ -53,8 +54,8 @@ const Profile = ({ user }) => {
       await axios.put(`${API_URL}/api/users/profile`, { profile: updatedProfile }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Profile updated successfully');
-      navigate('/');
+      setSuccessMessage('✅ Profile updated successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Error updating profile:', error);
     }
@@ -74,8 +75,9 @@ const Profile = ({ user }) => {
         }
       });
       setResumeUrl(res.data.resumeUrl);
-      alert('Resume uploaded successfully');
-      navigate('/');
+      setResume(null);
+      setSuccessMessage('✅ Resume uploaded successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Error uploading resume:', error);
     }
@@ -85,7 +87,24 @@ const Profile = ({ user }) => {
 
   return (
     <div className="container mt-4">
-      <h2>Your Profile</h2>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
+        <h2>Your Profile</h2>
+        <button onClick={() => navigate('/')} className="btn" style={{background: '#666'}}>← Back to Dashboard</button>
+      </div>
+      
+      {successMessage && (
+        <div style={{
+          padding: '15px',
+          marginBottom: '20px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          borderRadius: '5px',
+          textAlign: 'center',
+          fontSize: '16px'
+        }}>
+          {successMessage}
+        </div>
+      )}
       
       <div className="card p-4 mb-4">
         <h3>Resume Management</h3>
