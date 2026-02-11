@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const AddDetails = () => {
   const [formData, setFormData] = useState({
     title: '',
@@ -14,7 +16,7 @@ const AddDetails = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/jobs', formData, {
+      await axios.post(`${API_URL}/api/jobs`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFormData({ title: '', company: '', location: '', description: '', salary: '' });

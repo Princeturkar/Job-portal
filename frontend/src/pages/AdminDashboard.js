@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const AdminDashboard = ({ user }) => {
   const [jobs, setJobs] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -27,7 +29,7 @@ const AdminDashboard = ({ user }) => {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/jobs');
+      const response = await axios.get(`${API_URL}/api/jobs`);
       setJobs(response.data || []);
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -37,7 +39,7 @@ const AdminDashboard = ({ user }) => {
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/jobs/applications', {
+      const response = await axios.get(`${API_URL}/api/jobs/applications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setApplications(response.data || []);
@@ -51,7 +53,7 @@ const AdminDashboard = ({ user }) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/jobs', formData, {
+      await axios.post(`${API_URL}/api/jobs`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFormData({ 
@@ -90,7 +92,7 @@ const AdminDashboard = ({ user }) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/jobs/${editingJob}`, formData, {
+      await axios.put(`${API_URL}/api/jobs/${editingJob}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEditingJob(null);
@@ -115,7 +117,7 @@ const AdminDashboard = ({ user }) => {
     if (window.confirm('Delete this job?')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:5000/api/jobs/${jobId}`, {
+        await axios.delete(`${API_URL}/api/jobs/${jobId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchJobs();
@@ -129,7 +131,7 @@ const AdminDashboard = ({ user }) => {
   const updateApplicationStatus = async (applicationId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/jobs/applications/${applicationId}`, 
+      await axios.put(`${API_URL}/api/jobs/applications/${applicationId}`, 
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

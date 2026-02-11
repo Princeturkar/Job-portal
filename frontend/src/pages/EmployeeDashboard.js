@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const EmployeeDashboard = ({ user }) => {
   const [jobs, setJobs] = useState([]);
   const [activeTab, setActiveTab] = useState('browse-jobs');
@@ -20,7 +22,7 @@ const EmployeeDashboard = ({ user }) => {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/jobs');
+      const response = await axios.get(`${API_URL}/api/jobs`);
       setJobs(response.data || []);
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -30,7 +32,7 @@ const EmployeeDashboard = ({ user }) => {
   const fetchMyApplications = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/jobs/my-applications', {
+      const response = await axios.get(`${API_URL}/api/jobs/my-applications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMyApplications(response.data || []);
@@ -42,7 +44,7 @@ const EmployeeDashboard = ({ user }) => {
   const fetchSavedJobs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/jobs/saved', {
+      const response = await axios.get(`${API_URL}/api/jobs/saved`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSavedJobs(response.data || []);
@@ -55,7 +57,7 @@ const EmployeeDashboard = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       console.log('Frontend apply - Job ID:', jobId, 'User:', user);
-      const response = await axios.post(`http://localhost:5000/api/jobs/${jobId}/apply`, {}, {
+      const response = await axios.post(`${API_URL}/api/jobs/${jobId}/apply`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('Apply response:', response.data);
@@ -70,7 +72,7 @@ const EmployeeDashboard = ({ user }) => {
   const handleSaveJob = async (jobId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:5000/api/jobs/${jobId}/save`, {}, {
+      await axios.post(`${API_URL}/api/jobs/${jobId}/save`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Job saved!');

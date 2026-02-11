@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Profile = ({ user }) => {
   const [profileData, setProfileData] = useState({
     skills: '',
@@ -19,7 +21,7 @@ const Profile = ({ user }) => {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/users/profile', {
+      const res = await axios.get(`${API_URL}/api/users/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.profile) {
@@ -44,7 +46,7 @@ const Profile = ({ user }) => {
         ...profileData,
         skills: profileData.skills.split(',').map(s => s.trim())
       };
-      await axios.put('http://localhost:5000/api/users/profile', { profile: updatedProfile }, {
+      await axios.put(`${API_URL}/api/users/profile`, { profile: updatedProfile }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Profile updated successfully');
@@ -60,7 +62,7 @@ const Profile = ({ user }) => {
     formData.append('resume', resume);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:5000/api/users/upload-resume', formData, {
+      const res = await axios.post(`${API_URL}/api/users/upload-resume`, formData, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
