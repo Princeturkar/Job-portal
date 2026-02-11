@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,6 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const Profile = ({ user }) => {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const [profileData, setProfileData] = useState({
     skills: '',
     education: [{ institution: '', degree: '', year: '' }],
@@ -76,8 +77,11 @@ const Profile = ({ user }) => {
       });
       setResumeUrl(res.data.resumeUrl);
       setResume(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       setSuccessMessage('✅ Resume uploaded successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
+      // Refresh profile data to show the resume link
+      fetchProfile();
     } catch (error) {
       console.error('Error uploading resume:', error);
     }
@@ -113,7 +117,13 @@ const Profile = ({ user }) => {
         )}
         <form onSubmit={handleResumeUpload}>
           <div className="mb-3">
-            <input type="file" className="form-control" onChange={(e) => setResume(e.target.files[0])} accept=".pdf,.doc,.docx" />
+            <input 
+              ref={fileInputRef}
+              type="file" 
+              className="form-control" 
+              onChange={(e) => setResume(e.target.files[0])} 
+              accept=".pdf,.doc,.docx" 
+            />
           </div>
           <button type="submit" className="btn btn-primary">Upload New Resume</button>
         </form>
